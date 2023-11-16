@@ -2,7 +2,7 @@
 
 <style>@import url("//readme.codeadam.ca/readme.css");</style>
 
-This website provides a location for the LEGO commutiy to upload inventory of Pick-a-Brick walls in LEGO stores. 
+This website provides a place for the LEGO® community to post brick inventories at Pick-a-Brick wall in LEGO® stores. 
 
 This is currently being done in Canada with a Facebook Group:
 
