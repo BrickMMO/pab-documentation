@@ -2,10 +2,7 @@
 
 ## Process
 
-This applciation will provide a place for the LEGO® to post the inventory of Pick-a-Brick wall in LEGO® stores. In this first phase we will create a directory of LEGO® stores that scrapes the LEGO® website for location information. This phase wil include:
-
-1. A list of LEGO® stores.
-2. Store profiles including store name, address, photo, hours, etc...
+This applciation will provide a place for the LEGO® to post the inventory of Pick-a-Brick wall in LEGO® stores. In this first phase we focus on creating an import script to import all LEGO® store information into a database.
 
 There is no backend for this project. Currently all backend functionality in completed by running the import script. In the future the import can be automated and run once a month using [CRON](https://en.wikipedia.org/wiki/Cron).
 
@@ -86,8 +83,8 @@ foreach($stores['storesDirectory'] as $key => $country)
 
     At this point you can open open the BrickMMO PAB import page. It will output some location related data.
 
-        > [!TIP]  
-        > Steps six through thirteen have a project task in GitHub. Make sure to assign these tasks when starting. And then use these tasks to create your branch and a pull request when done.
+    > [!TIP]  
+    > Steps six through thirteen have a project task in GitHub. Make sure to assign these tasks when starting. And then use these tasks to create your branch and a pull request when done.
 
 4. **Regions**
 
@@ -108,135 +105,88 @@ foreach($stores['storesDirectory'] as $key => $country)
         PUT NEW REGION ID IN A VARIABLE
     ```
 
-    If writting a query in PHP is a hard step, start by just outputting the region name. Then write and output your query. And once you are happy with it, try running it.
+    If writting a query in PHP is a hard step, start by just outputting the region name:
+    
+    ```php
+    foreach($stores['storesDirectory'] as $key => $country)
+    {
+        print_r($country);
+        echo $country['region'];
+    }
+    ```
+    
+    Then write and output your query:
 
-8. **Countries**
+    ```php
+    foreach($stores['storesDirectory'] as $key => $country)
+    {
+        $query = 'INSERT INTO regions (
+                name
+            ) VALUES (
+                "'.$country['region'].'"
+            )';
+        echo $query;
+    }
+    ```
+    
+    And once you are happy with it, try running it.
+
+    ```php
+    foreach($stores['storesDirectory'] as $key => $country)
+    {
+        $query = 'INSERT INTO regions (
+                name
+            ) VALUES (
+                "'.$country['region'].'"
+            )';
+        mysqli_query($connect, $query);
+    }
+    ```
+
+5. **Countries**
 
     Still within the first loop, use the data in the `$country` variable to add a record to the countries table.
 
-   Make sure to use the region ID from the previous step as the value for the `region_id` field. 
+    Make sure to use the region ID from the previous insert step as the value for the `region_id` field. 
 
-   On the home page you will link each theme to `\theme.php?id=1`. The number one will be replaced with the `id` value form the theme table. It will look something like this:
+6. **Stores**
+
+    Once you have the code inserting regions and countries (without inserting duplicates) use the second loop to insert stores. For now just use the data that is available in the `/import.json` file.
 
     ```php
-    <?php while($theme = mysqli_fetch_assoc($result)): ?>
-
-        <a href="theme.php?id=<?=$theme['id']?>"><?=$theme['name']?></a>
-        
-    <?php endwhile; ?>
+    (
+        [storeId] => 100
+        [name] => LEGO® Store Mirdiff City Centre
+        [phone] => 04 231 6321
+        [state] => 
+        [openingDate] => 
+        [certified] => 1
+        [additionalInfo] => This LEGO® Store is owned and operated by a licensed independent third-party. Offers, promotions, pricing, and inventory may vary, and the LEGO VIP loyalty program will not be available. Gift cards and product returns ordered through LEGO.com will not be accepted. Please contact the store directly for more information.
+        [storeUrl] => https://www.lego.com/stores/stores/mirdiff-city-centre
+        [urlKey] => mirdiff-city-centre
+        [isNewStore] => 
+        [isComingSoon] => 
+        [__typename] => StoreInfo
+    )
     ```
 
-    Modify the `profile.php` page. Review the [Rebrickable Database Structure](https://rebrickable.com/api/v3/docs/) and the tables in phpMyAdmin to see what data is avaiable to put on the theme page.
-
-    Add some of the following data:
-
-    - Colour ID
-    - Number of themes
-    - A sample image (you can grab one from a set)
-        
-    Include a list of sets including:
-
-    - Set name
-    - Set ID
-    - Image
-    - Number of parts
-    - Release date
-
-10. **Set Page**
-
-    On the theme page you will link each set to `\set.php?id=1`. The number one will be replaced with the `id` value form the set table. 
-
-    Modify the `set.php` page. Review the [Rebrickable Database Structure](https://rebrickable.com/api/v3/docs/) and the tables in phpMyAdmin to see what data is avaiable to put on the set page.
-
-    Add some of the following data:
-
-    - Set ID
-    - Number of parts
-    - Image
-        
-    Include a list of parts including:
-
-    - Part name
-    - Part ID
-    - Image
+    Use this data to create a loation insert query. Fill the `name`, `phone`, `info`, `certified`, and `reference_id` fields.
     
-11. **Sample Brick Image**
+7. **Scraped Store Data**
 
-    You can add a sample brick by using the [Rebrickable](https://rebrickable.com/downloads/) media. For example, the following URL:
-    
-    ```
-    https://cdn.rebrickable.com/media/thumbs/parts/ldraw/4/3003.png/85x85p.png
-    ```
+    There is already code in the `/import.php` file that scrapes the HTML from the official LEGO® locations website. You will need to use a variety of PHP string functions to extract important values such as:
 
-    Will display the following image:
+    - address
+    - hours
+    - store features
+    - image
 
-    ![Red 3001 Brick](https://cdn.rebrickable.com/media/thumbs/parts/ldraw/4/3003.png/85x85p.png)
+    You will need to add fields to the `locations` table and possible a whole new table. 
 
-    The image URL consists of the following parts:
+8. **About PAB** 
 
-    - Rebrickable media URL: `https://cdn.rebrickable.com/media/thumbs/parts/ldraw/`
-    - The colour ID using the `rebrickable_id` value from the `colours` table: `<?=$colour['rebrickable_id']?>`
-    - The LEGO® brick ID using, you can look these up at the [LEGO® Pick-a-Brick Store](https://www.lego.com/en-ca/pick-and-build/pick-a-brick)
-    - And the width and height of the image
-
-12. **Part Page**
-
-    On the set page you will link each part to `\part.php?id=1`. The number one will be replaced with the `id` value form the part table. 
-
-    Modify the `part.php` page. Review the [Rebrickable Database Structure](https://rebrickable.com/api/v3/docs/) and the tables in phpMyAdmin to see what data is avaiable to put on the part page.
-
-    Add some of the following data:
-
-    - Part ID
-    - Image
-    
-    Include a list of sets the part is included in:
-
-    - Part name
-    - Part ID
-
-    Link each part back to `/part.php?id=1`.
-
-    Include a list of minifigures the part is included in:
-
-    - Minifigure name
-    - Minifigure ID
-
-    Link each set back to `/minifigure.php?id=1`.
-
-13. **Minifigure Page**
-
-    On the set and part page you will link each minifigure to `\minifigure.php?id=1`. The number one will be replaced with the `id` value form the minifigure table. 
-
-    Create a file named `minifigure.php` page. Review the [Rebrickable Database Structure](https://rebrickable.com/api/v3/docs/) and the tables in phpMyAdmin to see what data is avaiable to put on the minifigure page.
-
-    Add some of the following data:
-
-    - Minifigure ID
-    - Minifigure Name
-    - Image
-        
-    Include a list of sets the minifigure is included in:
-
-    - Set name
-    - Set ID
-
-    Link each set back to `/set.php?id=1`.
-
-    Include a list of parts the minifigure requires:
-
-    - Part name
-    - Part ID
-
-    Link each part back to `/part.php?id=1`.
-
-14. **Apply Design**
-
-    Apply the designs from step one!
-
-15. **About Parts** 
-
-    Update the [parts-about](https://github.com/BrickMMO/parts-about) Markdown! Add your names to the `v1.markdown` page. 
+    Update the [pab-about](https://github.com/BrickMMO/    Update the [pab-about](https://github.com/BrickMMO/parts-about) Markdown! Add your names to the `v1.markdown` page. 
+-about) Markdown! Add your names to the `v1.markdown` page. 
 
 [&#10132; Back to V2](/coloupartsrs-about/v2)
 
