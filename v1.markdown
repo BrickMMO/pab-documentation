@@ -1,6 +1,6 @@
 <style>@import url("//readme.codeadam.ca/readme.css");</style>
 
-## Version 1 - First Draft
+## Version 1 - Store Import
 
 Completed: November 2023
 
