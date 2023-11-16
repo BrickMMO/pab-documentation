@@ -2,40 +2,20 @@
 
 ## Process
 
-This applciation will provide a directory with the following information:
+This applciation will provide a place for the LEGO® to post the inventory of Pick-a-Brick wall in LEGO® stores. In this first phase we will create a directory of LEGO® stores that scrapes the LEGO® website for location information. This phase wil include:
 
-1. A list of LEGO® themes.
-2. Information on a theme and a list of sets within a chosen theme.
-3. Information on a set and parts and minifigures inlcuded in the chosen set.
-4. Information on individual parts.
-5. Information on individual minifigures.
+1. A list of LEGO® stores.
+2. Store profiles including store name, address, photo, hours, etc...
 
-There is no backend for this project. Currently all backend functionality in completed by importing the raw [Rebrickable](https://rebrickable.com/downloads/) SQL files. In the future the import can be automated and run once a month using [CRON](https://en.wikipedia.org/wiki/Cron).
+There is no backend for this project. Currently all backend functionality in completed by running the import script. In the future the import can be automated and run once a month using [CRON](https://en.wikipedia.org/wiki/Cron).
 
 *** 
 
 ### Completed by Instructor
 
-The [parts-v1](https://github.com/BrickMMO/parts-v1) includes a basic PHP core also used in [flow-v1](https://github.com/BrickMMO/flow-v2) and [stop-start-continue-v1](https://github.com/BrickMMO/stop-start-continue-v1). The core is available in the [php-w3css-core](https://github.com/codeadamca/php-w3css-core) repo.
+The [pab-v1](https://github.com/BrickMMO/pab-v1) repo includes a starting point for the import. The store JSON fle taken from the LEGO® website has been copied to the `/import.json` file. The `/import.php` file inports the JSON, loops through teh stores, and scrapes the ® store profile page on the LEGO® website. 
 
-There are twelve tables for this project provided by [Rebrickable](https://rebrickable.com/downloads/):
-
-- colors
-- elements
-- inventories
-- inventory_minifigs
-- inventory_parts
-- inventory_sets
-- minifigs
-- parts
-- part_categories
-- part_relationships
-- sets
-- themes
-
-The database structure is as follows:
-
-![BrickMMO Parts Schemea](/images/v1-schema.png)
+![LEGO Stores](images/lego-stores.png)
 
 > [!NOTE]  
 > Review the database structure. Understand how themes are connected to sets, sets connected to pieces, etc...
