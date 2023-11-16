@@ -13,64 +13,53 @@ There is no backend for this project. Currently all backend functionality in com
 
 ### Completed by Instructor
 
-The [pab-v1](https://github.com/BrickMMO/pab-v1) repo includes a starting point for the import. The store JSON fle taken from the LEGO® website has been copied to the `/import.json` file. The `/import.php` file inports the JSON, loops through teh stores, and scrapes the ® store profile page on the LEGO® website. 
+The [pab-v1](https://github.com/BrickMMO/pab-v1) repo includes a starting point for the import. The store JSON fle taken from the LEGO® website has been copied to the `/import.json` file. The `/import.php` file inports the JSON using `file_get_contents()`, loops through the list of stores, and uses `cURL` to scrapes store profile page from the LEGO® website:
 
-![LEGO Stores](images/lego-stores.png)
+```php
+$url = 'import.json';
+$stores = json_decode(file_get_contents($url), true);
+
+foreach($stores['storesDirectory'] as $key => $country)
+{
+
+    foreach($country['stores'] as $key => $store)
+    {
+
+        $url = 'https://www.lego.com/en-my/stores/store/'.$store['urlKey'];
+
+        $curl = curl_init($url);
+        
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        
+        $response = curl_exec($curl);
+        curl_close($curl);
+     
+        echo '<pre>';
+        print_r($store);
+        print_r(($response));
+        echo '</pre>';
+
+        sleep(10);
+
+        echo '<hr>';
+
+        die();
+
+    }
+
+}
+```
+
+![LEGO Stores](../images/lego-stores.png)
 
 > [!NOTE]  
-> Review the database structure. Understand how themes are connected to sets, sets connected to pieces, etc...
-
-The repo currently includes a rough scafolding:
-
-| File | Description |
-| - | - | 
-| index.php | This file lists all the current themes. Each theme links to `theme.php` with a theme `id`. |
-| theme.php | This file includes details about the theme and a list of all sets within the theme. Each set links to `set.php` wtih a set `id`. |
-| set.php | This file includes details about the set and a list of all parts within the set. Each part links to `part.php` wtih a part `id`. |
-| part.php | This file includes details about the part and a list of sets using that part and colours the part is avaialable in. This page can link back to `set.php` with a set `id`. |
-
-These files include no design. They rach output only a few fields with functional links. 
+> Review the store directory to see what data is aviaable to be scraped and placed in the database.
 
 *** 
 
 ### Steps
 
-1. **Design**
-
-    Using [Figma](https://www.figma.com/) (or your design tool of choice) mock up the application. The application should include the five pages (the four described above and one more display a minifigure).
-
-    1. **Home Page**
-
-        A list of all themes including theme name, a sample set image from this theme, and any other additional fields. This page content should somewhat mimic [https://rebrickable.com/sets/](https://rebrickable.com/sets/).
-
-    2. **Theme Page**
-
-        A theme profile including theme name, an image, and any other additional fields. Follwed by a list of all sets within the theme including set name, image, and any other additional fields. This page content should somewhat mimic [https://rebrickable.com/sets/star-wars/](https://rebrickable.com/sets/star-wars/).
-
-    3. **Set Page**
-
-        A set profile including set name, an image, and any other additional fields. Follwed by a list of all parts within the set including part name, image, ID, and any other additional fields along with all minifigures within the set. This page content should somewhat mimic [https://rebrickable.com/sets/75359-1/332nd-ahsokas-clone-trooper-battle-pack/](https://rebrickable.com/sets/75359-1/332nd-ahsokas-clone-trooper-battle-pack/).
-
-    4. **Parts Page**
-
-        A part profile including part name, an image, ID, and any other additional fields. Follwed by a list of sets the part is included in and a list of colours the part is aviaable in. This page content should somewhat mimic [https://rebrickable.com/parts/79389/bracket-1-x-1-1-x-2/](https://rebrickable.com/parts/79389/bracket-1-x-1-1-x-2/).
-
-    5. **Minifigure Page**
-
-        A minifigure profile including minifigure name, an image, ID, and any other additional fields. Follwed by a list of sets the minifigure is included in and a list of parts the minifigure is made of. This page content should somewhat mimic [https://rebrickable.com/minifigs/fig-002476/archer-black-falcon-black-legs-black-hips-pointed-shield-chin-guard/](https://rebrickable.com/minifigs/fig-002476/archer-black-falcon-black-legs-black-hips-pointed-shield-chin-guard/).
-
-    The design style should mimic that of the [Passive Aggressive Password Machine](https://trypap.com/):
-
-    - Nice large fonts
-    - Simple layout
-    - Well spaced out
-    - Simple forms
-
-    This project will use [W3.CSS](https://www.w3schools.com/w3css/). Review the W3.CSS website and avalable components and incorporate these into your design. 
-
-    When complete, present your design to your instructor before moving on to the next step. 
-
-2. **Local Server**
+1. **Local Server**
 
     Install a tool such as [MAMP](https://www.mamp.info/) on your computer. Open the MAMP progam and start the server. 
 
@@ -78,17 +67,13 @@ These files include no design. They rach output only a few fields with functiona
 
     In another tab open up [phpMyAdmin](https://www.phpmyadmin.net/). If you're using MAMP it will be something like [http://localhost:8888/phpMyAdmin/](http://localhost:8888/phpMyAdmin/) on a MAC or [http://localhost/phpMyAdmin/](http://localhost/phpMyAdmin/) on a PC.
     
-3. **Database**
+2. **Database**
 
-    Using phpMyAdmin create a new database named `brickmmo_parts` and import eleven of the SQL files in the `/imports` folder. Do not import `inventory_parts.sql.gz` just yet.
+    Using phpMyAdmin create a new database named `brickmmo_pab` and import the three SQL files in the `/imports` folder.
 
-4. **Large SQL Imports**
+3. **Source Code**
 
-    Try to import the `inventory_parts.sql.gz` file. Your browser will likely timeout. This is because browsers servers have a maximum file upload size of 2MB and the `inventory_parts.sql.gz` file is over 12MB. You will need to find a different method to import this file. Google the term `phpmyadmin inport large file` and see if you can implement a solution. 
-
-5. **Source Code**
-
-    Clone the [parts-v1](https://github.com/BrickMMO/parts-v1) repo into your MAMP root folder (or point MAMP to your cloned directory). Restart the server if needed. 
+    Clone the [parts-v1](https://github.com/BrickMMO/pab-v1) repo into your MAMP root folder (or point MAMP to your cloned directory). Restart the server if needed. 
 
     Copy the `/.env.sample` file amd name it `/.env`. Change the database variables to `brickmmo_parts` and the MAMP defaults:
 
@@ -99,21 +84,39 @@ These files include no design. They rach output only a few fields with functiona
     DB_PASSWORD=root
     ```
 
-    At this point you can open open the BrickMMO Colours home page. It will be empty, but there should be no PHP errors. 
+    At this point you can open open the BrickMMO PAB import page. It will output some location related data.
 
         > [!TIP]  
         > Steps six through thirteen have a project task in GitHub. Make sure to assign these tasks when starting. And then use these tasks to create your branch and a pull request when done.
 
-6. **Home Page**
+4. **Regions**
+
+    The stores are gouped by region (contenant) and country.
+
+    Within the first loop (but outside the second loop), there is a `$country` variable. Inside this variable there is a region name (two capital letters), a country name (two capital letters), and a country ID (a long string of characters and numbers and dashes).
+
+    Using this data add a record to the regions. However, because multiple countries can belong to a region, you will needd to check to see if the region has already been inserted. You code will be something like this:
+
+    ```
+    QUERY DATABASE FOR REGION
     
-    Modify the home page. Review the [Rebrickable Database Structure](https://rebrickable.com/api/v3/docs/) and the tables in phpMyAdmin to see what data is avaiable to put on the home page. Make these changes to the `/index.php` file. Don't worry too much about the design yet. 
+    IF REGION IS FOUND
+        PUT FOUND REGION ID IN A VARIABLE
+    
+    ELSE IF REGINO IS NOT FOUND
+        INSERT NEW REGION 
+        PUT NEW REGION ID IN A VARIABLE
+    ```
 
-        > [!NOTE]  
-        > At this point do not worry about the design. Just use basic HTML, black text, and Times New Roman. No CSS needed. 
+    If writting a query in PHP is a hard step, start by just outputting the region name. Then write and output your query. And once you are happy with it, try running it.
 
-7. **Theme Page**
+8. **Countries**
 
-    On the home page you will link each theme to `\theme.php?id=1`. The number one will be replaced with the `id` value form the theme table. It will look something like this:
+    Still within the first loop, use the data in the `$country` variable to add a record to the countries table.
+
+   Make sure to use the region ID from the previous step as the value for the `region_id` field. 
+
+   On the home page you will link each theme to `\theme.php?id=1`. The number one will be replaced with the `id` value form the theme table. It will look something like this:
 
     ```php
     <?php while($theme = mysqli_fetch_assoc($result)): ?>
@@ -139,7 +142,7 @@ These files include no design. They rach output only a few fields with functiona
     - Number of parts
     - Release date
 
-8. **Set Page**
+10. **Set Page**
 
     On the theme page you will link each set to `\set.php?id=1`. The number one will be replaced with the `id` value form the set table. 
 
@@ -157,7 +160,7 @@ These files include no design. They rach output only a few fields with functiona
     - Part ID
     - Image
     
-9. **Sample Brick Image**
+11. **Sample Brick Image**
 
     You can add a sample brick by using the [Rebrickable](https://rebrickable.com/downloads/) media. For example, the following URL:
     
@@ -176,7 +179,7 @@ These files include no design. They rach output only a few fields with functiona
     - The LEGO® brick ID using, you can look these up at the [LEGO® Pick-a-Brick Store](https://www.lego.com/en-ca/pick-and-build/pick-a-brick)
     - And the width and height of the image
 
-10. **Part Page**
+12. **Part Page**
 
     On the set page you will link each part to `\part.php?id=1`. The number one will be replaced with the `id` value form the part table. 
 
@@ -201,7 +204,7 @@ These files include no design. They rach output only a few fields with functiona
 
     Link each set back to `/minifigure.php?id=1`.
 
-11. **Minifigure Page**
+13. **Minifigure Page**
 
     On the set and part page you will link each minifigure to `\minifigure.php?id=1`. The number one will be replaced with the `id` value form the minifigure table. 
 
@@ -227,11 +230,11 @@ These files include no design. They rach output only a few fields with functiona
 
     Link each part back to `/part.php?id=1`.
 
-12. **Apply Design**
+14. **Apply Design**
 
     Apply the designs from step one!
 
-13. **About Parts** 
+15. **About Parts** 
 
     Update the [parts-about](https://github.com/BrickMMO/parts-about) Markdown! Add your names to the `v1.markdown` page. 
 
