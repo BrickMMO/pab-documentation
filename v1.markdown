@@ -1,0 +1,31 @@
+<style>@import url("//readme.codeadam.ca/readme.css");</style>
+
+## Version 1 - First Draft
+
+Completed: November 2023
+
+During phase one an import script was written to import regions, countries, and stores from the LEGO® stores directory.
+
+### Related Links
+
+- [Version 1 GitHub Repo](https://github.com/BrickMMO/pab-v1)
+
+### Process
+
+For students developing this project you may follow this process:
+
+- [Process (Markdown)](v1/pab-v1-process.markdown)
+
+### Contributors
+
+| | Name | Type | GitHub |
+| ------------------------------------- | ----------- | ------- | ----------------------------------------------------- |
+| ![codeadamca](faculty/codeadamca.png) | Adam Thomas | Faculty | [https://contributions.brickmmo.com/faculty/codeadamca](https://contributions.brickmmo.com/faculty/codeadamca) |
+
+[&#10132; Back to About](/pab-about/)
+
+---
+
+<a href="https://brickmmo.com">
+<img src="https://brickmmo.com/images/brickmmo-logo-horizontal.jpg" width="100">
+</a>
