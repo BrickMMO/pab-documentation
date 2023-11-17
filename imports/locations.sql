@@ -24,12 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `regions`
+-- Table structure for table `locations`
 --
 
-CREATE TABLE `regions` (
+CREATE TABLE `locations` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `reference_id` int(11) DEFAULT NULL,
+  `country_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -39,9 +41,9 @@ CREATE TABLE `regions` (
 --
 
 --
--- Indexes for table `regions`
+-- Indexes for table `locations`
 --
-ALTER TABLE `regions`
+ALTER TABLE `locations`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -49,9 +51,9 @@ ALTER TABLE `regions`
 --
 
 --
--- AUTO_INCREMENT for table `regions`
+-- AUTO_INCREMENT for table `locations`
 --
-ALTER TABLE `regions`
+ALTER TABLE `locations`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 

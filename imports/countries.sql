@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Nov 17, 2023 at 08:37 PM
+-- Generation Time: Nov 17, 2023 at 08:39 PM
 -- Server version: 5.7.39
 -- PHP Version: 8.2.0
 
@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `countries` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `reference_id` varchar(255) NOT NULL,
-  `region_id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `reference_id` varchar(255) DEFAULT NULL,
+  `region_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
