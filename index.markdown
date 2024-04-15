@@ -1,16 +1,16 @@
-# parts-about
+# Pick-A-Brick(PAB)-about
 
 <style>@import url("//readme.codeadam.ca/readme.css");</style>
 
-This website provides a place for the LEGO® community to post brick inventories at Pick-a-Brick wall in LEGO® stores. 
+This website provides a place for the LEGO® community to post brick inventories at Pick-a-Brick wall in LEGO® stores.
 
 This is currently being done in Canada with a Facebook Group:
 
 ![PAB Facebook Group](images/pab-facebook.png)
 
-This application will allow visitors to upload photos and select the actual brick in the photo. Future iterations will usse Machine Learning to identify the brick name and ID. 
+This application will allow visitors to upload photos and select the actual brick in the photo. Future iterations will usse Machine Learning to identify the brick name and ID.
 
-- [BrickMMO Parts](https://pab.brickmmo.com)
+- [BrickMMO PAB](https://pab.brickmmo.com)
 
 ## [Version 1 - Rough Draft](v1)
 

@@ -18,9 +18,11 @@ For students developing this project you may follow this process:
 
 ### Contributors
 
-| | Name | Type | Contributions |
-| - | - | - | - |
+|                                       | Name        | Type    | Contributions                                                       |
+| ------------------------------------- | ----------- | ------- | ------------------------------------------------------------------- |
 | ![codeadamca](faculty/codeadamca.png) | Adam Thomas | Faculty | [codeadamca](https://contributions.brickmmo.com/faculty/codeadamca) |
+
+|![sadipnsu](images/sadipnsu.jpg) | Fazhrul Sadip | Student | [sadipnsu](https://github.com/BrickMMO/contributions/blob/main/students/sadipnsu) |
 
 [&#10132; Back to About](/pab-about/)
 
