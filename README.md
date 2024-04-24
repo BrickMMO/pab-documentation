@@ -6,7 +6,7 @@ This website will be used to track contributions, versions, and documentation fo
 > All Markdown should follow the [_readme](https://readme.codeadam.ca/) guidelines.
 
 > This repo is available to view at  
-> [https://brickmmo.github.io/pab-about/](https://brickmmo.github.io/pab-about/)
+> [https://brickmmo.github.io/pab-documentation/](https://brickmmo.github.io/pab-documentation/)
 
 ---
 
